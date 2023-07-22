@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+// VIEWS
+import 'package:list_timer/views/collection_list_view.dart';
+
 final colorScheme = ColorScheme.fromSeed(
   brightness: Brightness.dark,
   seedColor: const Color.fromARGB(255, 102, 6, 247),
@@ -17,7 +20,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: "List Timer",
-      // home: ListView(),
+      home: CollectionListView(),
     );
   }
 }
