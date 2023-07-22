@@ -3,6 +3,7 @@ import 'package:list_timer/views/collection_detail_view.dart';
 
 // VIEWS
 import 'package:list_timer/views/widgets/drawer_view.dart';
+import 'package:list_timer/views/collection_add_view.dart';
 
 // MODELS
 import 'package:list_timer/models/collection_model.dart';
@@ -23,11 +24,17 @@ final collectionList = [
 class CollectionListView extends StatelessWidget {
   const CollectionListView({super.key});
 
-  void _addNewCollection() {}
-
-  void _viewCollectionDetail(BuildContext context) {
+  void _addNewCollection(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => const CollectionDetailView(),
+      builder: (context) => CollectionAddView(),
+    ));
+  }
+
+  void _viewCollectionDetail(BuildContext context, Collection collection) {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => CollectionDetailView(
+        collection: collection,
+      ),
     ));
   }
 
@@ -39,7 +46,9 @@ class CollectionListView extends StatelessWidget {
         title: const Text("List Timer"),
         actions: [
           IconButton(
-            onPressed: _addNewCollection,
+            onPressed: () {
+              _addNewCollection(context);
+            },
             icon: const Icon(Icons.add),
           )
         ],
@@ -53,11 +62,11 @@ class CollectionListView extends StatelessWidget {
         itemCount: collectionList.length,
         itemBuilder: (context, index) => ListTile(
           title: Text(collectionList[index].title),
-          subtitle: Text("10 minutes"),
+          subtitle: const Text("10 minutes"),
           trailing: Text(
               "${collectionList[index].itemsList.length.toString()} items"),
           onTap: () {
-            _viewCollectionDetail(context);
+            _viewCollectionDetail(context, collectionList[index]);
           },
         ),
       ),
