@@ -10,7 +10,7 @@ class CollectionAddView extends StatefulWidget {
 class _CollectionAddViewState extends State<CollectionAddView> {
   final _formKey = GlobalKey<FormState>();
 
-  final List _itemsList = [true];
+  final List _itemsList = [];
 
   final _titleController = TextEditingController();
 
@@ -60,9 +60,26 @@ class _CollectionAddViewState extends State<CollectionAddView> {
                 },
               ),
 
+              const SizedBox(height: 20),
+              Row(
+                children: [
+                  const Text("Add items to collection"),
+                  IconButton(
+                      onPressed: () {
+                        setState(() {
+                          _itemsList.add(null);
+                        });
+                      },
+                      icon: const Icon(
+                        Icons.add_circle,
+                        color: Colors.green,
+                      )),
+                ],
+              ),
+
               // ITEM LIST VIEW
               Expanded(
-                child: ListView.separated(
+                child: ListView.builder(
                   itemCount: _itemsList.length,
                   itemBuilder: (context, index) => Row(
                     children: [
@@ -72,6 +89,12 @@ class _CollectionAddViewState extends State<CollectionAddView> {
                           decoration: const InputDecoration(
                             label: Text("Item"),
                           ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Please input a valid title.";
+                            }
+                            return null;
+                          },
                         ),
                       ),
 
@@ -80,39 +103,42 @@ class _CollectionAddViewState extends State<CollectionAddView> {
                       // ITEM DURATION TEXT FORM FIELD
                       Expanded(
                         child: TextFormField(
+                          keyboardType: TextInputType.number,
                           decoration: const InputDecoration(
                             label: Text("Duration"),
+                            hintText: "0",
+                            suffixText: "minutes",
                           ),
+                          validator: (value) {
+                            if (value == null ||
+                                value.isEmpty ||
+                                int.tryParse(value) == null) {
+                              return "Please input a valid duration.";
+                            }
+                            return null;
+                          },
                         ),
                       ),
 
-                      // ADD ICON BUTTON
+                      // ADD ICON INKWELL
                       IconButton(
                         onPressed: () {
-                          if (index == _itemsList.length - 1) {
-                            setState(() {
-                              _itemsList.insert(index, true);
-                            });
-                          } else {
-                            setState(() {
-                              _itemsList.removeAt(index);
-                            });
-                          }
+                          setState(() {
+                            _itemsList.removeAt(index);
+                          });
                         },
-                        icon: index == _itemsList.length - 1
-                            ? const Icon(Icons.add_circle)
-                            : const Icon(Icons.remove_circle),
-                      ),
+                        icon: const Icon(
+                          Icons.remove_circle,
+                          color: Colors.red,
+                        ),
+                      )
                     ],
-                  ),
-                  separatorBuilder: (context, index) => const SizedBox(
-                    height: 20,
                   ),
                 ),
               ),
 
               const SizedBox(
-                height: 12,
+                height: 20,
               ),
 
               // ADD BUTTON
