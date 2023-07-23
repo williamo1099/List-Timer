@@ -12,7 +12,9 @@ class _CollectionAddViewState extends State<CollectionAddView> {
 
   final List _itemsList = [];
 
-  final _titleController = TextEditingController();
+  final TextEditingController _titleController = TextEditingController();
+  final List<TextEditingController> _itemTitleListController = [];
+  final List<TextEditingController> _itemDurationListController = [];
 
   void _addNewCollection() {
     _formKey.currentState!.validate();
@@ -22,7 +24,14 @@ class _CollectionAddViewState extends State<CollectionAddView> {
   @override
   void dispose() {
     super.dispose();
+
     _titleController.dispose();
+    for (final controller in _itemTitleListController) {
+      controller.dispose();
+    }
+    for (final controller in _itemDurationListController) {
+      controller.dispose();
+    }
   }
 
   @override
@@ -68,6 +77,9 @@ class _CollectionAddViewState extends State<CollectionAddView> {
                       onPressed: () {
                         setState(() {
                           _itemsList.add(null);
+                          _itemTitleListController.add(TextEditingController());
+                          _itemDurationListController
+                              .add(TextEditingController());
                         });
                       },
                       icon: const Icon(
@@ -78,6 +90,7 @@ class _CollectionAddViewState extends State<CollectionAddView> {
               ),
 
               // ITEM LIST VIEW
+
               Expanded(
                 child: ListView.builder(
                   itemCount: _itemsList.length,
@@ -86,6 +99,7 @@ class _CollectionAddViewState extends State<CollectionAddView> {
                       // ITEM TITLE TEXT FORM FIELD
                       Expanded(
                         child: TextFormField(
+                          controller: _itemTitleListController[index],
                           decoration: const InputDecoration(
                             label: Text("Item"),
                           ),
@@ -103,6 +117,7 @@ class _CollectionAddViewState extends State<CollectionAddView> {
                       // ITEM DURATION TEXT FORM FIELD
                       Expanded(
                         child: TextFormField(
+                          controller: _itemDurationListController[index],
                           keyboardType: TextInputType.number,
                           decoration: const InputDecoration(
                             label: Text("Duration"),
@@ -120,11 +135,13 @@ class _CollectionAddViewState extends State<CollectionAddView> {
                         ),
                       ),
 
-                      // ADD ICON INKWELL
+                      // ADD ICON BUTTON
                       IconButton(
                         onPressed: () {
                           setState(() {
                             _itemsList.removeAt(index);
+                            _itemTitleListController.removeAt(index);
+                            _itemDurationListController.removeAt(index);
                           });
                         },
                         icon: const Icon(
