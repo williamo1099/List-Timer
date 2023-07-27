@@ -26,6 +26,10 @@ class _CollectionDetailViewState extends State<CollectionDetailView> {
   void _addNewItem() {}
 
   void _play() async {
+    setState(() {
+      _isPlaying = true;
+    });
+
     await Future.forEach(collection.itemsList, (item) async {
       final duration = Duration(seconds: item.duration);
       print(duration);
@@ -33,6 +37,10 @@ class _CollectionDetailViewState extends State<CollectionDetailView> {
       FlutterTts ftts = FlutterTts();
       final result = ftts.speak(item.title);
       await Future.delayed(duration);
+    });
+
+    setState(() {
+      _isPlaying = false;
     });
   }
 
