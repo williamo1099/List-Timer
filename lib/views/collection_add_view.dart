@@ -95,6 +95,7 @@ class _CollectionAddViewState extends State<CollectionAddView> {
                 child: ListView.builder(
                   itemCount: _itemsList.length,
                   itemBuilder: (context, index) => Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       // ITEM TITLE TEXT FORM FIELD
                       Expanded(
@@ -134,6 +135,8 @@ class _CollectionAddViewState extends State<CollectionAddView> {
                           },
                         ),
                       ),
+
+                      const SizedBox(width: 10),
 
                       // ADD ICON BUTTON
                       IconButton(

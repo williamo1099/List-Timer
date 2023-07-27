@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 // MODELS
 import 'package:list_timer/models/collection_model.dart';
+import 'package:list_timer/models/item_model.dart';
 
 class CollectionDetailView extends StatefulWidget {
   const CollectionDetailView({super.key, required this.collection});
@@ -15,9 +17,24 @@ class CollectionDetailView extends StatefulWidget {
 class _CollectionDetailViewState extends State<CollectionDetailView> {
   bool _isPlaying = false;
 
+  final collection = Collection(title: "Running", itemsList: [
+    Item(title: "Run", duration: 2),
+    Item(title: "Walk", duration: 5),
+    Item(title: "Run", duration: 2),
+  ]);
+
   void _addNewItem() {}
 
-  void _play() {}
+  void _play() async {
+    await Future.forEach(collection.itemsList, (item) async {
+      final duration = Duration(seconds: item.duration);
+      print(duration);
+
+      FlutterTts ftts = FlutterTts();
+      final result = ftts.speak(item.title);
+      await Future.delayed(duration);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,14 +62,14 @@ class _CollectionDetailViewState extends State<CollectionDetailView> {
                 itemBuilder: (context, index) => ListTile(
                   title: Text(widget.collection.itemsList[index].title),
                   trailing: Text(
-                      "${widget.collection.itemsList[index].duration} minutes"),
+                      "${widget.collection.itemsList[index].duration} seconds"),
                 ),
               ),
             ),
 
             // PLAY BUTTON
             IconButton(
-              onPressed: _addNewItem,
+              onPressed: _play,
               icon: _isPlaying
                   ? const Icon(
                       Icons.stop_circle,

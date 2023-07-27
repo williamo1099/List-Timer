@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:list_timer/views/collection_detail_view.dart';
 
 // VIEWS
-import 'package:list_timer/views/widgets/drawer_view.dart';
+import 'package:list_timer/views/drawer_view.dart';
 import 'package:list_timer/views/collection_add_view.dart';
 
 // MODELS
