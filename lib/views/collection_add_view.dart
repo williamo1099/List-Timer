@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:list_timer/models/collection_model.dart';
 
-class CollectionAddView extends StatefulWidget {
+// MODELS
+import 'package:list_timer/models/item_model.dart';
+
+// PROVIDERS
+import 'package:list_timer/providers/collection_provider.dart';
+
+class CollectionAddView extends ConsumerStatefulWidget {
   const CollectionAddView({super.key});
 
   @override
-  State<CollectionAddView> createState() => _CollectionAddViewState();
+  ConsumerState<CollectionAddView> createState() => _CollectionAddViewState();
 }
 
-class _CollectionAddViewState extends State<CollectionAddView> {
+class _CollectionAddViewState extends ConsumerState<CollectionAddView> {
   final _formKey = GlobalKey<FormState>();
 
   final List _itemsList = [];
@@ -17,8 +25,26 @@ class _CollectionAddViewState extends State<CollectionAddView> {
   final List<TextEditingController> _itemDurationListController = [];
 
   void _addNewCollection() {
-    _formKey.currentState!.validate();
-    _formKey.currentState!.save();
+    final isValid = _formKey.currentState!.validate();
+
+    if (isValid) {
+      final List<Item> itemsList = [];
+      for (var i = 0; i < _itemsList.length; i++) {
+        Item newItem = Item(
+            title: _itemTitleListController[i].text,
+            duration: int.parse(_itemDurationListController[i].text));
+
+        itemsList.add(newItem);
+      }
+
+      Collection newCollection =
+          Collection(title: _titleController.text, itemsList: itemsList);
+      ref.read(collectionProvider.notifier).addNewCollection(newCollection);
+
+      Navigator.of(context).pop();
+    } else {
+      return;
+    }
   }
 
   @override

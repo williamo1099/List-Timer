@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:riverpod/riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // VIEWS
 import 'package:list_timer/views/drawer_view.dart';
@@ -8,21 +8,11 @@ import 'package:list_timer/views/collection_detail_view.dart';
 
 // MODELS
 import 'package:list_timer/models/collection_model.dart';
-import 'package:list_timer/models/item_model.dart';
 
-final collectionList = [
-  Collection(title: "Running", itemsList: [
-    Item(title: "Run", duration: 2),
-    Item(title: "Walk", duration: 5),
-    Item(title: "Run", duration: 4),
-  ]),
-  Collection(title: "Studying", itemsList: [
-    Item(title: "Study", duration: 5),
-    Item(title: "Rest", duration: 1),
-  ]),
-];
+// PROVIDERS
+import 'package:list_timer/providers/collection_provider.dart';
 
-class CollectionListView extends StatelessWidget {
+class CollectionListView extends ConsumerWidget {
   const CollectionListView({super.key});
 
   void _addNewCollection(BuildContext context) {
@@ -40,7 +30,9 @@ class CollectionListView extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    List<Collection> collectionList = ref.watch(collectionProvider);
+
     return Scaffold(
       // APPBAR
       appBar: AppBar(
@@ -56,7 +48,7 @@ class CollectionListView extends StatelessWidget {
       ),
 
       // DRAWER
-      drawer: DrawerView(),
+      drawer: const DrawerView(),
 
       // BODY
       body: ListView.builder(

@@ -1,4 +1,4 @@
-import 'package:riverpod/riverpod.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // MODELS
 import 'package:list_timer/models/collection_model.dart';
@@ -7,7 +7,7 @@ class CollectionNotifier extends StateNotifier<List<Collection>> {
   CollectionNotifier() : super([]);
 
   void addNewCollection(Collection newCollection) {
-    state = [newCollection, ...state];
+    state = [...state, newCollection];
   }
 
   void removeCollection(String id) {
