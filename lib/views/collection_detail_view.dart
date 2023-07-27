@@ -3,7 +3,6 @@ import 'package:flutter_tts/flutter_tts.dart';
 
 // MODELS
 import 'package:list_timer/models/collection_model.dart';
-import 'package:list_timer/models/item_model.dart';
 
 class CollectionDetailView extends StatefulWidget {
   const CollectionDetailView({super.key, required this.collection});
@@ -17,12 +16,6 @@ class CollectionDetailView extends StatefulWidget {
 class _CollectionDetailViewState extends State<CollectionDetailView> {
   bool _isPlaying = false;
 
-  final collection = Collection(title: "Running", itemsList: [
-    Item(title: "Run", duration: 2),
-    Item(title: "Walk", duration: 5),
-    Item(title: "Run", duration: 2),
-  ]);
-
   void _addNewItem() {}
 
   void _play() async {
@@ -30,12 +23,9 @@ class _CollectionDetailViewState extends State<CollectionDetailView> {
       _isPlaying = true;
     });
 
-    await Future.forEach(collection.itemsList, (item) async {
+    await Future.forEach(widget.collection.itemsList, (item) async {
       final duration = Duration(seconds: item.duration);
-      print(duration);
-
-      FlutterTts ftts = FlutterTts();
-      final result = ftts.speak(item.title);
+      FlutterTts().speak(item.title);
       await Future.delayed(duration);
     });
 

@@ -11,13 +11,13 @@ import 'package:list_timer/models/item_model.dart';
 
 final collectionList = [
   Collection(title: "Running", itemsList: [
-    Item(title: "Run", duration: 10),
-    Item(title: "Walk", duration: 10),
-    Item(title: "Run", duration: 10),
+    Item(title: "Run", duration: 2),
+    Item(title: "Walk", duration: 5),
+    Item(title: "Run", duration: 4),
   ]),
   Collection(title: "Studying", itemsList: [
-    Item(title: "Study", duration: 30),
-    Item(title: "Rest", duration: 10),
+    Item(title: "Study", duration: 5),
+    Item(title: "Rest", duration: 1),
   ]),
 ];
 
@@ -26,7 +26,7 @@ class CollectionListView extends StatelessWidget {
 
   void _addNewCollection(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => CollectionAddView(),
+      builder: (context) => const CollectionAddView(),
     ));
   }
 
@@ -62,7 +62,8 @@ class CollectionListView extends StatelessWidget {
         itemCount: collectionList.length,
         itemBuilder: (context, index) => ListTile(
           title: Text(collectionList[index].title),
-          subtitle: const Text("10 minutes"),
+          subtitle: Text(
+              "${collectionList[index].itemsList.fold(0, (previousValue, element) => previousValue + element.duration)} seconds"),
           trailing: Text(
               "${collectionList[index].itemsList.length.toString()} items"),
           onTap: () {
