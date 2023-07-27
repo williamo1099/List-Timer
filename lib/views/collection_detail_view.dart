@@ -3,6 +3,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 
 // MODELS
 import 'package:list_timer/models/collection_model.dart';
+import 'package:list_timer/views/collection_add_view.dart';
 
 class CollectionDetailView extends StatefulWidget {
   const CollectionDetailView({super.key, required this.collection});
@@ -16,7 +17,7 @@ class CollectionDetailView extends StatefulWidget {
 class _CollectionDetailViewState extends State<CollectionDetailView> {
   bool _isPlaying = false;
 
-  void _addNewItem() {}
+  void _editCollection() {}
 
   void _play() async {
     setState(() {
@@ -42,8 +43,8 @@ class _CollectionDetailViewState extends State<CollectionDetailView> {
         title: Text(widget.collection.title),
         actions: [
           IconButton(
-            onPressed: _addNewItem,
-            icon: const Icon(Icons.add),
+            onPressed: _editCollection,
+            icon: const Icon(Icons.edit),
           )
         ],
       ),

@@ -16,6 +16,13 @@ class CollectionNotifier extends StateNotifier<List<Collection>> {
         if (collection.id != id) collection,
     ];
   }
+
+  void replaceCollection(String id, Collection newCollection) {
+    state = [
+      for (final collection in state)
+        if (collection.id != id) collection else newCollection,
+    ];
+  }
 }
 
 final collectionProvider =
