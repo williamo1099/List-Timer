@@ -33,6 +33,49 @@ class CollectionListView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     List<Collection> collectionList = ref.watch(collectionProvider);
 
+    Widget body = ListView.builder(
+      itemCount: collectionList.length,
+      itemBuilder: (context, index) => Dismissible(
+        key: Key(collectionList[index].id),
+        direction: DismissDirection.endToStart,
+        onDismissed: (direction) {
+          ref
+              .read(collectionProvider.notifier)
+              .removeCollection(collectionList[index].id);
+
+          ScaffoldMessenger.of(context).removeCurrentSnackBar();
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text("Collection successfully removed.")));
+        },
+        background: Container(
+          color: Colors.red,
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Icon(Icons.delete),
+              SizedBox(width: 25),
+            ],
+          ),
+        ),
+        child: ListTile(
+          title: Text(collectionList[index].title),
+          subtitle: Text(
+              "${collectionList[index].itemsList.fold(0, (previousValue, element) => previousValue + element.duration)} seconds"),
+          trailing: Text(
+              "${collectionList[index].itemsList.length.toString()} items"),
+          onTap: () {
+            _viewCollectionDetail(context, collectionList[index]);
+          },
+        ),
+      ),
+    );
+
+    if (collectionList.isEmpty) {
+      body = const Center(
+        child: Text("Start by adding a new collection."),
+      );
+    }
+
     return Scaffold(
       // APPBAR
       appBar: AppBar(
@@ -51,19 +94,7 @@ class CollectionListView extends ConsumerWidget {
       drawer: const DrawerView(),
 
       // BODY
-      body: ListView.builder(
-        itemCount: collectionList.length,
-        itemBuilder: (context, index) => ListTile(
-          title: Text(collectionList[index].title),
-          subtitle: Text(
-              "${collectionList[index].itemsList.fold(0, (previousValue, element) => previousValue + element.duration)} seconds"),
-          trailing: Text(
-              "${collectionList[index].itemsList.length.toString()} items"),
-          onTap: () {
-            _viewCollectionDetail(context, collectionList[index]);
-          },
-        ),
-      ),
+      body: body,
     );
   }
 }
