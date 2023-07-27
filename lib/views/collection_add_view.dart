@@ -90,7 +90,6 @@ class _CollectionAddViewState extends State<CollectionAddView> {
               ),
 
               // ITEM LIST VIEW
-
               Expanded(
                 child: ListView.builder(
                   itemCount: _itemsList.length,
