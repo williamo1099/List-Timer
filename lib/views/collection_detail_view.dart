@@ -5,7 +5,7 @@ import 'package:flutter_tts/flutter_tts.dart';
 // MODELS
 import 'package:list_timer/models/collection_model.dart';
 import 'package:list_timer/providers/collection_provider.dart';
-import 'package:list_timer/views/collection_add_view.dart';
+import 'package:list_timer/views/collection_editor_view.dart';
 
 class CollectionDetailView extends ConsumerStatefulWidget {
   const CollectionDetailView(
@@ -24,7 +24,7 @@ class _CollectionDetailViewState extends ConsumerState<CollectionDetailView> {
 
   void _editCollection() {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => CollectionAddView(
+      builder: (context) => CollectionEditorView(
         currentCollection: widget.collection,
       ),
     ));

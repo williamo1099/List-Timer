@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // VIEWS
 import 'package:list_timer/views/drawer_view.dart';
-import 'package:list_timer/views/collection_add_view.dart';
+import 'package:list_timer/views/collection_editor_view.dart';
 import 'package:list_timer/views/collection_detail_view.dart';
 
 // MODELS
@@ -17,7 +17,7 @@ class CollectionListView extends ConsumerWidget {
 
   void _addNewCollection(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => const CollectionAddView(
+      builder: (context) => const CollectionEditorView(
         currentCollection: null,
       ),
     ));
