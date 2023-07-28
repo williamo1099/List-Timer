@@ -1,6 +1,6 @@
 # List Timer
 
-<img src='asset/logo.png' align='right' alt='List Timer logo' width='120' height='120'>
+<img src='assets/images/logo.png' align='right' alt='List Timer logo' width='120' height='120'>
 
 I (<i>sometimes</i> ﾉ≧ڡ≦) do treadmill workout which consists of multiple segments (e.g. jog for 60 seconds, walk for 40 seconds and stretch for 40 seconds) so I need multiple timers at once. Unfortunately my iPhone timer app is not able to do that (at the moment) therefore I made this simple app. And voilà!
 

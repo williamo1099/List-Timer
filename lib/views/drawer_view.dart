@@ -5,12 +5,32 @@ class DrawerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
+    return const Drawer(
       child: Column(
         children: [
-          DrawerHeader(child: Text("header")),
-          Text("Blabla"),
-          Text("Blabla"),
+          // DRAWER HEADER
+          DrawerHeader(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                // APP LOGO IMAGE
+                CircleAvatar(
+                  radius: 30,
+                  backgroundImage: AssetImage("assets/images/logo.png"),
+                ),
+                SizedBox(height: 15),
+
+                // WELCOME TEXT
+                Text("Welcome!"),
+              ],
+            ),
+          ),
+
+          // DRAWER ITEMS
+          ListTile(
+            leading: Icon(Icons.water_drop),
+            title: Text("Teardrops"),
+          ),
         ],
       ),
     );
