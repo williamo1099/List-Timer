@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
 // MODELS
 import 'package:list_timer/models/collection_model.dart';
+import 'package:list_timer/providers/collection_provider.dart';
 import 'package:list_timer/views/collection_add_view.dart';
 
-class CollectionDetailView extends StatefulWidget {
-  const CollectionDetailView({super.key, required this.collection});
+class CollectionDetailView extends ConsumerStatefulWidget {
+  const CollectionDetailView(
+      {super.key, required this.collection, required this.collectionId});
 
   final Collection collection;
+  final String collectionId;
 
   @override
-  State<CollectionDetailView> createState() => _CollectionDetailViewState();
+  ConsumerState<CollectionDetailView> createState() =>
+      _CollectionDetailViewState();
 }
 
-class _CollectionDetailViewState extends State<CollectionDetailView> {
+class _CollectionDetailViewState extends ConsumerState<CollectionDetailView> {
   bool _isPlaying = false;
 
   void _editCollection() {
@@ -43,10 +48,14 @@ class _CollectionDetailViewState extends State<CollectionDetailView> {
 
   @override
   Widget build(BuildContext context) {
+    Collection collection = ref.watch(collectionProvider).firstWhere(
+          (element) => element.id == widget.collectionId,
+        );
+
     return Scaffold(
       // APPBAR
       appBar: AppBar(
-        title: Text(widget.collection.title),
+        title: Text(collection.title),
         actions: [
           IconButton(
             onPressed: _editCollection,
@@ -63,11 +72,11 @@ class _CollectionDetailViewState extends State<CollectionDetailView> {
             // LISTVIEW
             Expanded(
               child: ListView.builder(
-                itemCount: widget.collection.itemsList.length,
+                itemCount: collection.itemsList.length,
                 itemBuilder: (context, index) => ListTile(
-                  title: Text(widget.collection.itemsList[index].title),
-                  trailing: Text(
-                      "${widget.collection.itemsList[index].duration} seconds"),
+                  title: Text(collection.itemsList[index].title),
+                  trailing:
+                      Text("${collection.itemsList[index].duration} seconds"),
                 ),
               ),
             ),

@@ -73,15 +73,17 @@ class _CollectionAddViewState extends ConsumerState<CollectionAddView> {
         itemsList.add(newItem);
       }
 
-      Collection newCollection =
-          Collection(title: _titleController.text, itemsList: itemsList);
-
       if (_isAdding()) {
+        Collection newCollection =
+            Collection(title: _titleController.text, itemsList: itemsList);
         ref.read(collectionProvider.notifier).addNewCollection(newCollection);
       } else {
-        ref
-            .read(collectionProvider.notifier)
-            .replaceCollection(widget.currentCollection!.id, newCollection);
+        Collection replacementCollection = Collection(
+            id: widget.currentCollection!.id,
+            title: _titleController.text,
+            itemsList: itemsList);
+        ref.read(collectionProvider.notifier).replaceCollection(
+            widget.currentCollection!.id, replacementCollection);
       }
 
       Navigator.of(context).pop();
