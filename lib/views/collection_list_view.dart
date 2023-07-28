@@ -26,7 +26,6 @@ class CollectionListView extends ConsumerWidget {
   void _viewCollectionDetail(BuildContext context, Collection collection) {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => CollectionDetailView(
-        collection: collection,
         collectionId: collection.id,
       ),
     ));

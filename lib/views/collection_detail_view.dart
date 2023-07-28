@@ -8,10 +8,8 @@ import 'package:list_timer/providers/collection_provider.dart';
 import 'package:list_timer/views/collection_editor_view.dart';
 
 class CollectionDetailView extends ConsumerStatefulWidget {
-  const CollectionDetailView(
-      {super.key, required this.collection, required this.collectionId});
+  const CollectionDetailView({super.key, required this.collectionId});
 
-  final Collection collection;
   final String collectionId;
 
   @override
@@ -25,17 +23,22 @@ class _CollectionDetailViewState extends ConsumerState<CollectionDetailView> {
   void _editCollection() {
     Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => CollectionEditorView(
-        currentCollection: widget.collection,
+        currentCollection: ref
+            .watch(collectionProvider)
+            .firstWhere((element) => element.id == widget.collectionId),
       ),
     ));
   }
 
-  void _play() async {
+  void _playItems() async {
     setState(() {
       _isPlaying = true;
     });
 
-    await Future.forEach(widget.collection.itemsList, (item) async {
+    Collection collection = ref
+        .watch(collectionProvider)
+        .firstWhere((element) => element.id == widget.collectionId);
+    await Future.forEach(collection.itemsList, (item) async {
       final duration = Duration(seconds: item.duration);
       FlutterTts().speak(item.title);
       await Future.delayed(duration);
@@ -83,7 +86,7 @@ class _CollectionDetailViewState extends ConsumerState<CollectionDetailView> {
 
             // PLAY BUTTON
             IconButton(
-              onPressed: _play,
+              onPressed: _playItems,
               icon: _isPlaying
                   ? const Icon(
                       Icons.stop_circle,
