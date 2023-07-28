@@ -17,7 +17,9 @@ class CollectionListView extends ConsumerWidget {
 
   void _addNewCollection(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(
-      builder: (context) => const CollectionAddView(),
+      builder: (context) => const CollectionAddView(
+        currentCollection: null,
+      ),
     ));
   }
 

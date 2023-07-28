@@ -9,27 +9,63 @@ import 'package:list_timer/models/item_model.dart';
 import 'package:list_timer/providers/collection_provider.dart';
 
 class CollectionAddView extends ConsumerStatefulWidget {
-  const CollectionAddView({super.key});
+  const CollectionAddView({super.key, required this.currentCollection});
+
+  final Collection? currentCollection;
 
   @override
   ConsumerState<CollectionAddView> createState() => _CollectionAddViewState();
 }
 
 class _CollectionAddViewState extends ConsumerState<CollectionAddView> {
+  late int itemsCount;
+
+  // FORM PROPERTIES
   final _formKey = GlobalKey<FormState>();
 
-  final List _itemsList = [];
+  late TextEditingController _titleController;
+  late List<TextEditingController> _itemTitleListController;
+  late List<TextEditingController> _itemDurationListController;
 
-  final TextEditingController _titleController = TextEditingController();
-  final List<TextEditingController> _itemTitleListController = [];
-  final List<TextEditingController> _itemDurationListController = [];
+  @override
+  void initState() {
+    super.initState();
+
+    if (_isAdding()) {
+      itemsCount = 0;
+      _titleController = TextEditingController();
+      _itemTitleListController = [];
+      _itemDurationListController = [];
+    } else {
+      Collection collection = widget.currentCollection!;
+
+      itemsCount = collection.itemsList.length;
+      _titleController = TextEditingController(text: collection.title);
+      _itemTitleListController = [
+        for (final item in collection.itemsList)
+          TextEditingController(text: item.title)
+      ];
+      _itemDurationListController = [
+        for (final item in collection.itemsList)
+          TextEditingController(text: item.duration.toString())
+      ];
+    }
+  }
+
+  bool _isAdding() {
+    if (widget.currentCollection == null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   void _addNewCollection() {
     final isValid = _formKey.currentState!.validate();
 
     if (isValid) {
       final List<Item> itemsList = [];
-      for (var i = 0; i < _itemsList.length; i++) {
+      for (var i = 0; i < itemsCount; i++) {
         Item newItem = Item(
             title: _itemTitleListController[i].text,
             duration: int.parse(_itemDurationListController[i].text));
@@ -39,7 +75,14 @@ class _CollectionAddViewState extends ConsumerState<CollectionAddView> {
 
       Collection newCollection =
           Collection(title: _titleController.text, itemsList: itemsList);
-      ref.read(collectionProvider.notifier).addNewCollection(newCollection);
+
+      if (_isAdding()) {
+        ref.read(collectionProvider.notifier).addNewCollection(newCollection);
+      } else {
+        ref
+            .read(collectionProvider.notifier)
+            .replaceCollection(widget.currentCollection!.id, newCollection);
+      }
 
       Navigator.of(context).pop();
     } else {
@@ -65,7 +108,9 @@ class _CollectionAddViewState extends ConsumerState<CollectionAddView> {
     return Scaffold(
       // APPBAR
       appBar: AppBar(
-        title: const Text("Add a new Collection"),
+        title: _isAdding()
+            ? const Text("Add a new Collection")
+            : const Text("Update Collection"),
       ),
 
       // BODY
@@ -102,7 +147,7 @@ class _CollectionAddViewState extends ConsumerState<CollectionAddView> {
                   IconButton(
                       onPressed: () {
                         setState(() {
-                          _itemsList.add(null);
+                          itemsCount++;
                           _itemTitleListController.add(TextEditingController());
                           _itemDurationListController
                               .add(TextEditingController());
@@ -118,7 +163,7 @@ class _CollectionAddViewState extends ConsumerState<CollectionAddView> {
               // ITEM LIST VIEW
               Expanded(
                 child: ListView.builder(
-                  itemCount: _itemsList.length,
+                  itemCount: itemsCount,
                   itemBuilder: (context, index) => Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
@@ -167,7 +212,7 @@ class _CollectionAddViewState extends ConsumerState<CollectionAddView> {
                       IconButton(
                         onPressed: () {
                           setState(() {
-                            _itemsList.removeAt(index);
+                            itemsCount--;
                             _itemTitleListController.removeAt(index);
                             _itemDurationListController.removeAt(index);
                           });
@@ -189,7 +234,7 @@ class _CollectionAddViewState extends ConsumerState<CollectionAddView> {
               // ADD BUTTON
               ElevatedButton(
                 onPressed: _addNewCollection,
-                child: const Text("Add"),
+                child: _isAdding() ? const Text("Add") : const Text("Update"),
               ),
             ],
           ),

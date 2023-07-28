@@ -17,7 +17,13 @@ class CollectionDetailView extends StatefulWidget {
 class _CollectionDetailViewState extends State<CollectionDetailView> {
   bool _isPlaying = false;
 
-  void _editCollection() {}
+  void _editCollection() {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => CollectionAddView(
+        currentCollection: widget.collection,
+      ),
+    ));
+  }
 
   void _play() async {
     setState(() {

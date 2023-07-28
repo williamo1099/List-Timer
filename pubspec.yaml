@@ -38,6 +38,7 @@ dependencies:
   uuid: ^3.0.7
   flutter_tts: ^3.7.0
   flutter_riverpod: ^2.3.6
+  google_fonts: ^5.1.0
 
 dev_dependencies:
   flutter_test:
