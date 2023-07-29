@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:list_timer/models/collection_model.dart';
 
 // MODELS
-import 'package:list_timer/models/item_model.dart';
+import 'package:list_timer/models/timer_model.dart';
 
 // PROVIDERS
 import 'package:list_timer/providers/collection_provider.dart';
@@ -21,10 +21,10 @@ class CollectionEditorView extends ConsumerStatefulWidget {
 class _CollectionEditorViewState extends ConsumerState<CollectionEditorView> {
   final _formKey = GlobalKey<FormState>();
 
-  late int _itemsCount;
-  late TextEditingController _titleController;
-  late List<TextEditingController> _itemTitleListController;
-  late List<TextEditingController> _itemDurationListController;
+  late int _timersCount;
+  late TextEditingController _collectionTitleController;
+  late List<TextEditingController> _timersTitleListController;
+  late List<TextEditingController> _timersDurationListController;
 
   bool _isUpdating() {
     return widget.currentCollection != null;
@@ -34,26 +34,26 @@ class _CollectionEditorViewState extends ConsumerState<CollectionEditorView> {
     final isValid = _formKey.currentState!.validate();
 
     if (isValid) {
-      // Get the list of all items.
-      final List<Item> itemsList = [
-        for (var i = 0; i < _itemsCount; i++)
-          Item(
-              title: _itemTitleListController[i].text,
-              duration: int.parse(_itemDurationListController[i].text))
+      // Get the list of all timers.
+      final List<Timer> timersList = [
+        for (var i = 0; i < _timersCount; i++)
+          Timer(
+              title: _timersTitleListController[i].text,
+              duration: int.parse(_timersDurationListController[i].text))
       ];
 
       if (_isUpdating()) {
         // Update an existing collection.
         Collection replacementCollection = Collection(
             id: widget.currentCollection!.id,
-            title: _titleController.text,
-            itemsList: itemsList);
+            title: _collectionTitleController.text,
+            timersList: timersList);
         ref.read(collectionProvider.notifier).replaceCollection(
             widget.currentCollection!.id, replacementCollection);
       } else {
         // Add a new collection.
-        Collection newCollection =
-            Collection(title: _titleController.text, itemsList: itemsList);
+        Collection newCollection = Collection(
+            title: _collectionTitleController.text, timersList: timersList);
         ref.read(collectionProvider.notifier).addNewCollection(newCollection);
       }
 
@@ -69,23 +69,24 @@ class _CollectionEditorViewState extends ConsumerState<CollectionEditorView> {
       // Update an existing collection.
       Collection collection = widget.currentCollection!;
 
-      _itemsCount = collection.itemsList.length;
-      _titleController = TextEditingController(text: collection.title);
+      _timersCount = collection.timersList.length;
+      _collectionTitleController =
+          TextEditingController(text: collection.title);
 
-      _itemTitleListController = [
-        for (final item in collection.itemsList)
-          TextEditingController(text: item.title)
+      _timersTitleListController = [
+        for (final timer in collection.timersList)
+          TextEditingController(text: timer.title)
       ];
-      _itemDurationListController = [
-        for (final item in collection.itemsList)
-          TextEditingController(text: item.duration.toString())
+      _timersDurationListController = [
+        for (final timer in collection.timersList)
+          TextEditingController(text: timer.duration.toString())
       ];
     } else {
       // Add a new collection.
-      _itemsCount = 0;
-      _titleController = TextEditingController();
-      _itemTitleListController = [];
-      _itemDurationListController = [];
+      _timersCount = 0;
+      _collectionTitleController = TextEditingController();
+      _timersTitleListController = [];
+      _timersDurationListController = [];
     }
   }
 
@@ -93,10 +94,10 @@ class _CollectionEditorViewState extends ConsumerState<CollectionEditorView> {
   void dispose() {
     super.dispose();
 
-    _titleController.dispose();
-    for (var i = 0; i < _itemsCount; i++) {
-      _itemTitleListController[i].dispose();
-      _itemDurationListController[i].dispose();
+    _collectionTitleController.dispose();
+    for (var i = 0; i < _timersCount; i++) {
+      _timersTitleListController[i].dispose();
+      _timersDurationListController[i].dispose();
     }
   }
 
@@ -122,7 +123,7 @@ class _CollectionEditorViewState extends ConsumerState<CollectionEditorView> {
             children: [
               // TITLE TEXT FORM FIELD
               TextFormField(
-                controller: _titleController,
+                controller: _collectionTitleController,
                 decoration: const InputDecoration(
                   label: Text("Title"),
                 ),
@@ -140,13 +141,14 @@ class _CollectionEditorViewState extends ConsumerState<CollectionEditorView> {
               const SizedBox(height: 20),
               Row(
                 children: [
-                  const Text("Add items to collection"),
+                  const Text("Add timers to collection"),
                   IconButton(
                       onPressed: () {
                         setState(() {
-                          _itemsCount++;
-                          _itemTitleListController.add(TextEditingController());
-                          _itemDurationListController
+                          _timersCount++;
+                          _timersTitleListController
+                              .add(TextEditingController());
+                          _timersDurationListController
                               .add(TextEditingController());
                         });
                       },
@@ -157,19 +159,19 @@ class _CollectionEditorViewState extends ConsumerState<CollectionEditorView> {
                 ],
               ),
 
-              // ITEM LIST VIEW
+              // TIMER LIST VIEW
               Expanded(
                 child: ListView.builder(
-                  itemCount: _itemsCount,
+                  itemCount: _timersCount,
                   itemBuilder: (context, index) => Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      // ITEM TITLE TEXT FORM FIELD
+                      // TIMER TITLE TEXT FORM FIELD
                       Expanded(
                         child: TextFormField(
-                          controller: _itemTitleListController[index],
+                          controller: _timersTitleListController[index],
                           decoration: const InputDecoration(
-                            label: Text("Item"),
+                            label: Text("Title"),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -182,10 +184,10 @@ class _CollectionEditorViewState extends ConsumerState<CollectionEditorView> {
 
                       const SizedBox(width: 20),
 
-                      // ITEM DURATION TEXT FORM FIELD
+                      // TIMER DURATION TEXT FORM FIELD
                       Expanded(
                         child: TextFormField(
-                          controller: _itemDurationListController[index],
+                          controller: _timersDurationListController[index],
                           keyboardType: TextInputType.number,
                           decoration: const InputDecoration(
                             label: Text("Duration"),
@@ -209,9 +211,9 @@ class _CollectionEditorViewState extends ConsumerState<CollectionEditorView> {
                       IconButton(
                         onPressed: () {
                           setState(() {
-                            _itemsCount--;
-                            _itemTitleListController.removeAt(index);
-                            _itemDurationListController.removeAt(index);
+                            _timersCount--;
+                            _timersTitleListController.removeAt(index);
+                            _timersDurationListController.removeAt(index);
                           });
                         },
                         icon: const Icon(

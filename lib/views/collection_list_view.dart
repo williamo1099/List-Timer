@@ -62,9 +62,9 @@ class CollectionListView extends ConsumerWidget {
         child: ListTile(
           title: Text(collectionList[index].title),
           subtitle: Text(
-              "${collectionList[index].itemsList.fold(0, (previousValue, element) => previousValue + element.duration)} seconds"),
+              "${collectionList[index].timersList.fold(0, (previousValue, element) => previousValue + element.duration)} seconds"),
           trailing: Text(
-              "${collectionList[index].itemsList.length.toString()} items"),
+              "${collectionList[index].timersList.length.toString()} timers"),
           onTap: () {
             _viewCollectionDetail(context, collectionList[index]);
           },

@@ -2,8 +2,8 @@ import 'package:uuid/uuid.dart';
 
 const uuid = Uuid();
 
-class Item {
-  Item({
+class Timer {
+  Timer({
     required this.title,
     required this.duration,
     String? id,

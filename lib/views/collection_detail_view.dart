@@ -30,7 +30,7 @@ class _CollectionDetailViewState extends ConsumerState<CollectionDetailView> {
     ));
   }
 
-  void _playItems() async {
+  void _playTimers() async {
     setState(() {
       _isPlaying = true;
     });
@@ -38,9 +38,9 @@ class _CollectionDetailViewState extends ConsumerState<CollectionDetailView> {
     Collection collection = ref
         .watch(collectionProvider)
         .firstWhere((element) => element.id == widget.collectionId);
-    await Future.forEach(collection.itemsList, (item) async {
-      final duration = Duration(seconds: item.duration);
-      FlutterTts().speak(item.title);
+    await Future.forEach(collection.timersList, (timer) async {
+      final duration = Duration(seconds: timer.duration);
+      FlutterTts().speak(timer.title);
       await Future.delayed(duration);
     });
 
@@ -75,18 +75,18 @@ class _CollectionDetailViewState extends ConsumerState<CollectionDetailView> {
             // LISTVIEW
             Expanded(
               child: ListView.builder(
-                itemCount: collection.itemsList.length,
+                itemCount: collection.timersList.length,
                 itemBuilder: (context, index) => ListTile(
-                  title: Text(collection.itemsList[index].title),
+                  title: Text(collection.timersList[index].title),
                   trailing:
-                      Text("${collection.itemsList[index].duration} seconds"),
+                      Text("${collection.timersList[index].duration} seconds"),
                 ),
               ),
             ),
 
             // PLAY BUTTON
             IconButton(
-              onPressed: _playItems,
+              onPressed: _playTimers,
               icon: _isPlaying
                   ? const Icon(
                       Icons.stop_circle,

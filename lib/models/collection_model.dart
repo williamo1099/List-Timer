@@ -1,7 +1,7 @@
 import 'package:uuid/uuid.dart';
 
 // MODELS
-import 'package:list_timer/models/item_model.dart';
+import 'package:list_timer/models/timer_model.dart';
 
 const uuid = Uuid();
 
@@ -9,11 +9,11 @@ class Collection {
   Collection({
     required this.title,
     String? id,
-    List<Item>? itemsList,
+    List<Timer>? timersList,
   })  : id = id ?? uuid.v4(),
-        itemsList = itemsList ?? [];
+        timersList = timersList ?? [];
 
   final String id;
   final String title;
-  final List<Item> itemsList;
+  final List<Timer> timersList;
 }
