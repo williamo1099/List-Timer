@@ -78,8 +78,7 @@ class _CollectionDetailViewState extends ConsumerState<CollectionDetailView> {
                 itemCount: collection.timersList.length,
                 itemBuilder: (context, index) => ListTile(
                   title: Text(collection.timersList[index].title),
-                  trailing: Text(
-                      "${collection.timersList[index].duration} ${collection.timersList[index].pluralizedUnit}"),
+                  trailing: Text(collection.timersList[index].durationWithUnit),
                 ),
               ),
             ),

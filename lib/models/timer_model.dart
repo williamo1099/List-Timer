@@ -22,5 +22,12 @@ class Timer {
   })  : id = id ?? uuid.v4(),
         unit = unit ?? TimerUnit.second;
 
-  String get pluralizedUnit => duration > 1 ? "${unit.name}s" : unit.name;
+  int get durationInSecond => switch (unit) {
+        TimerUnit.second => duration,
+        TimerUnit.minute => duration * 60,
+        TimerUnit.hour => duration * 3600
+      };
+
+  String get durationWithUnit =>
+      "$duration ${unit.name}${duration > 1 ? "s" : ""}";
 }

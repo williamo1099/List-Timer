@@ -16,4 +16,23 @@ class Collection {
     List<Timer>? timersList,
   })  : id = id ?? uuid.v4(),
         timersList = timersList ?? [];
+
+  String get totalTimers =>
+      "${timersList.length} timer${timersList.length > 1 ? "s" : ""}";
+
+  String get totalDurations {
+    int totalSeconds = timersList.fold(0,
+        (previousValue, element) => previousValue + element.durationInSecond);
+
+    int totalTime = totalSeconds;
+    String totalDurations = "$totalTime ${TimerUnit.second.name}";
+    if (totalSeconds >= 60) {
+      totalTime = totalSeconds ~/ 60;
+      totalDurations = "$totalTime ${TimerUnit.minute.name}";
+    } else if (totalSeconds >= 3600) {
+      totalTime = totalSeconds ~/ 3600;
+      totalDurations = "$totalTime ${TimerUnit.hour.name}";
+    }
+    return "$totalDurations${totalTime > 1 ? "s" : ""}";
+  }
 }
