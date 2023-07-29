@@ -26,12 +26,12 @@ class Collection {
 
     int totalTime = totalSeconds;
     String totalDurations = "$totalTime ${TimerUnit.second.name}";
-    if (totalSeconds >= 60) {
-      totalTime = totalSeconds ~/ 60;
-      totalDurations = "$totalTime ${TimerUnit.minute.name}";
-    } else if (totalSeconds >= 3600) {
+    if (totalSeconds >= 3600) {
       totalTime = totalSeconds ~/ 3600;
       totalDurations = "$totalTime ${TimerUnit.hour.name}";
+    } else if (totalSeconds >= 60) {
+      totalTime = totalSeconds ~/ 60;
+      totalDurations = "$totalTime ${TimerUnit.minute.name}";
     }
     return "$totalDurations${totalTime > 1 ? "s" : ""}";
   }

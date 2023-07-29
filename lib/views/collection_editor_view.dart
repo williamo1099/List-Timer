@@ -25,6 +25,7 @@ class _CollectionEditorViewState extends ConsumerState<CollectionEditorView> {
   late TextEditingController _collectionTitleController;
   late List<TextEditingController> _timersTitleListController;
   late List<TextEditingController> _timersDurationListController;
+  late List<TimerUnit> _timersDurationUnitList;
 
   bool _isUpdating() {
     return widget.currentCollection != null;
@@ -39,7 +40,8 @@ class _CollectionEditorViewState extends ConsumerState<CollectionEditorView> {
         for (var i = 0; i < _timersCount; i++)
           Timer(
               title: _timersTitleListController[i].text,
-              duration: int.parse(_timersDurationListController[i].text))
+              duration: int.parse(_timersDurationListController[i].text),
+              unit: _timersDurationUnitList[i])
       ];
 
       if (_isUpdating()) {
@@ -81,12 +83,16 @@ class _CollectionEditorViewState extends ConsumerState<CollectionEditorView> {
         for (final timer in collection.timersList)
           TextEditingController(text: timer.duration.toString())
       ];
+      _timersDurationUnitList = [
+        for (final timer in collection.timersList) timer.unit
+      ];
     } else {
       // Add a new collection.
       _timersCount = 0;
       _collectionTitleController = TextEditingController();
       _timersTitleListController = [];
       _timersDurationListController = [];
+      _timersDurationUnitList = [];
     }
   }
 
@@ -150,6 +156,7 @@ class _CollectionEditorViewState extends ConsumerState<CollectionEditorView> {
                               .add(TextEditingController());
                           _timersDurationListController
                               .add(TextEditingController());
+                          _timersDurationUnitList.add(TimerUnit.second);
                         });
                       },
                       icon: const Icon(
@@ -168,6 +175,7 @@ class _CollectionEditorViewState extends ConsumerState<CollectionEditorView> {
                     children: [
                       // TIMER TITLE TEXT FORM FIELD
                       Expanded(
+                        flex: 1,
                         child: TextFormField(
                           controller: _timersTitleListController[index],
                           decoration: const InputDecoration(
@@ -186,22 +194,53 @@ class _CollectionEditorViewState extends ConsumerState<CollectionEditorView> {
 
                       // TIMER DURATION TEXT FORM FIELD
                       Expanded(
-                        child: TextFormField(
-                          controller: _timersDurationListController[index],
-                          keyboardType: TextInputType.number,
-                          decoration: const InputDecoration(
-                            label: Text("Duration"),
-                            hintText: "0",
-                            suffixText: "seconds",
-                          ),
-                          validator: (value) {
-                            if (value == null ||
-                                value.isEmpty ||
-                                int.tryParse(value) == null) {
-                              return "Please input a valid duration.";
-                            }
-                            return null;
-                          },
+                        flex: 3,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            // DURATION TEXT FORM FIELD
+                            Expanded(
+                              flex: 1,
+                              child: TextFormField(
+                                controller:
+                                    _timersDurationListController[index],
+                                keyboardType: TextInputType.number,
+                                decoration: const InputDecoration(
+                                  label: Text("Duration"),
+                                  hintText: "0",
+                                ),
+                                validator: (value) {
+                                  if (value == null ||
+                                      value.isEmpty ||
+                                      int.tryParse(value) == null) {
+                                    return "Please input a valid duration.";
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+
+                            // UNIT DROPDOWN MENU
+                            Expanded(
+                              flex: 2,
+                              child: DropdownButtonFormField(
+                                  value: _timersDurationUnitList[index],
+                                  items: TimerUnit.values
+                                      .map(
+                                        (unit) => DropdownMenuItem(
+                                          value: unit,
+                                          child: Text(unit.name),
+                                        ),
+                                      )
+                                      .toList(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _timersDurationUnitList[index] = value!;
+                                    });
+                                  }),
+                            ),
+                          ],
                         ),
                       ),
 
@@ -214,6 +253,7 @@ class _CollectionEditorViewState extends ConsumerState<CollectionEditorView> {
                             _timersCount--;
                             _timersTitleListController.removeAt(index);
                             _timersDurationListController.removeAt(index);
+                            _timersDurationUnitList.removeAt(index);
                           });
                         },
                         icon: const Icon(
