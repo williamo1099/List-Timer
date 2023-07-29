@@ -23,7 +23,7 @@ The app's main objective is to have multiple timers at once and to read all the 
 <p align="center">
     <img alt="Adding Interface" width="150" src="assets/images/screenshots/collection.png">
     &nbsp;&nbsp;
-    <img alt="Updating Interface" width="150" src="assets/images/screenshots/update.png">
+    <img alt="Updating Interface" width="150" src="assets/images/screenshots/add.png">
     &nbsp;&nbsp;
     <img alt="Updating Interface" width="150" src="assets/images/screenshots/update.png">
 </p>
