@@ -14,11 +14,10 @@ List Timer is a timer app with list for Android and iOS built using Flutter. The
 
 ## Features
 
-The app's main objective is to have multiple timers at once and to read all the timers out loud.
+The app's main objective is to have multiple timers at once and to read all the timers out loud. Here are all features of the List Timer app.
 * Play your collection of timers by tapping the play button.
 * You can have as many timers as you want in a collection. Add a new timer as needed.
 * Update your collection any time you want. If you realize there is a mistake in your collection, just update it with ease.
-
 
 <p align="center">
     <img alt="Adding Interface" width="150" src="assets/images/screenshots/collection.png">
@@ -28,7 +27,9 @@ The app's main objective is to have multiple timers at once and to read all the 
     <img alt="Updating Interface" width="150" src="assets/images/screenshots/update.png">
 </p>
 
-
+Some other features that are going to be implemented in this app as well. Here are some features currently sitting in my wishlist.
+* Store the collections data in disk.
+* Add more customizations to the app.
 
 ## Dependencies
 
