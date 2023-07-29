@@ -31,22 +31,30 @@ class _CollectionDetailViewState extends ConsumerState<CollectionDetailView> {
   }
 
   void _playTimers() async {
-    setState(() {
-      _isPlaying = true;
-    });
+    final textToSpeech = FlutterTts();
+    if (!_isPlaying) {
+      setState(() {
+        _isPlaying = true;
+      });
 
-    Collection collection = ref
-        .watch(collectionProvider)
-        .firstWhere((element) => element.id == widget.collectionId);
-    await Future.forEach(collection.timersList, (timer) async {
-      final duration = Duration(seconds: timer.duration);
-      FlutterTts().speak(timer.title);
-      await Future.delayed(duration);
-    });
+      Collection collection = ref
+          .watch(collectionProvider)
+          .firstWhere((element) => element.id == widget.collectionId);
+      await Future.forEach(collection.timersList, (timer) async {
+        final duration = Duration(seconds: timer.durationInSecond);
+        textToSpeech.speak(timer.title);
+        await Future.delayed(duration);
+      });
 
-    setState(() {
-      _isPlaying = false;
-    });
+      setState(() {
+        _isPlaying = false;
+      });
+    } else {
+      textToSpeech.stop();
+      setState(() {
+        _isPlaying = false;
+      });
+    }
   }
 
   @override
