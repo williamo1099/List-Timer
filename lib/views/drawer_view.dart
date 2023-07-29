@@ -25,11 +25,22 @@ class DrawerView extends StatelessWidget {
               ],
             ),
           ),
+          SizedBox(height: 20),
 
           // DRAWER ITEMS
           ListTile(
-            leading: Icon(Icons.water_drop),
-            title: Text("Teardrops"),
+            leading: Icon(Icons.question_mark),
+            title: Text("How to use the app"),
+          ),
+
+          ListTile(
+            leading: Icon(Icons.north_east),
+            title: Text("Check the app repo!"),
+          ),
+
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text("Settings"),
           ),
         ],
       ),

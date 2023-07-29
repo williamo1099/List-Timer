@@ -12,6 +12,7 @@ This app is built using Flutter and is dependant on some other packages in order
 
 * google_fonts: > 5.1.0
 * uuid: > 3.0.7
+* url_launcher: >6.1.12
 * flutter_tts: > 3.7.0
 * flutter_riverpod: > 2.3.6
 
