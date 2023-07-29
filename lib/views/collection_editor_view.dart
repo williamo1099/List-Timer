@@ -192,7 +192,7 @@ class _CollectionEditorViewState extends ConsumerState<CollectionEditorView> {
                           decoration: const InputDecoration(
                             label: Text("Duration"),
                             hintText: "0",
-                            suffixText: "minutes",
+                            suffixText: "seconds",
                           ),
                           validator: (value) {
                             if (value == null ||
