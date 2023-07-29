@@ -15,6 +15,9 @@ class EmptyView extends StatelessWidget {
           Image.asset(
             "assets/images/question_mark.png",
             width: 120,
+            color: Theme.of(context).brightness == Brightness.dark
+                ? const Color.fromARGB(255, 246, 244, 235)
+                : null,
           ),
           const SizedBox(height: 20),
 
