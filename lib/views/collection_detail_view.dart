@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 
+// VIEWS
+import 'package:list_timer/views/widgets/empty_view.dart';
+
 // MODELS
 import 'package:list_timer/models/collection_model.dart';
 import 'package:list_timer/providers/collection_provider.dart';
@@ -63,50 +66,57 @@ class _CollectionDetailViewState extends ConsumerState<CollectionDetailView> {
           (element) => element.id == widget.collectionId,
         );
 
-    return Scaffold(
-      // APPBAR
-      appBar: AppBar(
-        title: Text(collection.title),
-        actions: [
+    Widget body = Padding(
+      padding: const EdgeInsets.only(bottom: 30),
+      child: Column(
+        children: [
+          // LISTVIEW
+          Expanded(
+            child: ListView.builder(
+              itemCount: collection.timersList.length,
+              itemBuilder: (context, index) => ListTile(
+                title: Text(collection.timersList[index].title),
+                trailing: Text(collection.timersList[index].durationWithUnit),
+              ),
+            ),
+          ),
+
+          // PLAY BUTTON
           IconButton(
-            onPressed: _editCollection,
-            icon: const Icon(Icons.edit),
+            onPressed: _playTimers,
+            icon: _isPlaying
+                ? const Icon(
+                    Icons.stop_circle,
+                    size: 50,
+                  )
+                : const Icon(
+                    Icons.play_circle,
+                    size: 50,
+                  ),
           )
         ],
       ),
+    );
 
-      // BODY
-      body: Padding(
-        padding: const EdgeInsets.only(bottom: 30),
-        child: Column(
-          children: [
-            // LISTVIEW
-            Expanded(
-              child: ListView.builder(
-                itemCount: collection.timersList.length,
-                itemBuilder: (context, index) => ListTile(
-                  title: Text(collection.timersList[index].title),
-                  trailing: Text(collection.timersList[index].durationWithUnit),
-                ),
-              ),
-            ),
+    if (collection.timersList.isEmpty) {
+      body = const EmptyView(
+          message:
+              "Welp, there's no timer here.\nAdd a new timer by editing this collection.");
+    }
 
-            // PLAY BUTTON
+    return Scaffold(
+        // APPBAR
+        appBar: AppBar(
+          title: Text(collection.title),
+          actions: [
             IconButton(
-              onPressed: _playTimers,
-              icon: _isPlaying
-                  ? const Icon(
-                      Icons.stop_circle,
-                      size: 50,
-                    )
-                  : const Icon(
-                      Icons.play_circle,
-                      size: 50,
-                    ),
+              onPressed: _editCollection,
+              icon: const Icon(Icons.edit),
             )
           ],
         ),
-      ),
-    );
+
+        // BODY
+        body: body);
   }
 }

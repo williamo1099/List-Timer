@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // VIEWS
 import 'package:list_timer/views/drawer_view.dart';
+import 'package:list_timer/views/widgets/empty_view.dart';
 import 'package:list_timer/views/collection_editor_view.dart';
 import 'package:list_timer/views/collection_detail_view.dart';
 
@@ -71,9 +72,9 @@ class CollectionListView extends ConsumerWidget {
     );
 
     if (collectionList.isEmpty) {
-      body = const Center(
-        child: Text("Start by adding a new collection."),
-      );
+      body = const EmptyView(
+          message:
+              "It's kinda lonely here.\nStart by adding a new collection.");
     }
 
     return Scaffold(
