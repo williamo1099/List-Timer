@@ -14,9 +14,20 @@ class TutorialView extends StatelessWidget {
       // BODY
       body: const SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(8.0),
+          padding: EdgeInsets.all(8),
           child: Column(
             children: [
+              // INTRO TEXT
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8),
+                child: Text.rich(
+                  TextSpan(
+                      text:
+                          "Haa.. You are desperate enough to use the app? Kiddng! Here are some tutorials on how to use the app properly so check them out!"),
+                ),
+              ),
+              SizedBox(height: 10),
+
               // WHERE TO START TUTORIAL ITEM VIEW
               _TutorialItemView(
                 title: "Where to start?",
@@ -106,13 +117,22 @@ class _TutorialItemView extends StatelessWidget {
       title: Text(title),
       children: [
         for (final item in content) ...[
-          RichText(
-            text: TextSpan(
-              text: item[0],
+          // TUTORIAL TEXT
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Text.rich(
+              TextSpan(
+                text: item[0],
+              ),
             ),
           ),
+          const SizedBox(height: 5),
+
+          // TUTORIAL IMAGE
           if (item.length > 1) Image.asset(item[1]),
-        ]
+          const SizedBox(height: 10),
+        ],
+        const SizedBox(height: 10),
       ],
     );
   }
