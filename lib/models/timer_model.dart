@@ -30,4 +30,9 @@ class Timer {
 
   String get durationWithUnit =>
       "$duration ${unit.name}${duration > 1 ? "s" : ""}";
+
+  @override
+  String toString() {
+    return "A timer with id $id, title $title and $durationWithUnit.";
+  }
 }

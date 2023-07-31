@@ -110,7 +110,11 @@ class _CollectionListViewState extends ConsumerState<CollectionListView> {
 
       // BODY
       body: FutureBuilder(
-          future: _futureCollection, builder: (context, snapshot) => body),
+          future: _futureCollection,
+          builder: (context, snapshot) =>
+              snapshot.connectionState == ConnectionState.waiting
+                  ? const Center(child: CircularProgressIndicator())
+                  : body),
     );
   }
 }

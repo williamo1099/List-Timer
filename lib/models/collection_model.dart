@@ -35,4 +35,9 @@ class Collection {
     }
     return "$totalDurations${totalTime > 1 ? "s" : ""}";
   }
+
+  @override
+  String toString() {
+    return "A collection with id $id, title $title and $totalTimers.";
+  }
 }
