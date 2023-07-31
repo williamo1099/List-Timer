@@ -13,8 +13,22 @@ import 'package:list_timer/models/collection_model.dart';
 // PROVIDERS
 import 'package:list_timer/providers/collection_provider.dart';
 
-class CollectionListView extends ConsumerWidget {
+class CollectionListView extends ConsumerStatefulWidget {
   const CollectionListView({super.key});
+
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _CollectionListViewState();
+}
+
+class _CollectionListViewState extends ConsumerState<CollectionListView> {
+  late Future<void> _futureCollection;
+
+  @override
+  void initState() {
+    super.initState();
+    _futureCollection = ref.read(collectionProvider.notifier).loadCollection();
+  }
 
   void _addNewCollection(BuildContext context) {
     Navigator.of(context).push(MaterialPageRoute(
@@ -33,7 +47,7 @@ class CollectionListView extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     List<Collection> collectionList = ref.watch(collectionProvider);
 
     Widget body = ListView.builder(
@@ -95,7 +109,8 @@ class CollectionListView extends ConsumerWidget {
       drawer: const DrawerView(),
 
       // BODY
-      body: body,
+      body: FutureBuilder(
+          future: _futureCollection, builder: (context, snapshot) => body),
     );
   }
 }

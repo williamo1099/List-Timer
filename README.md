@@ -18,6 +18,7 @@ The app's main objective is to have multiple timers at once and to read all the 
 * Play your collection of timers by tapping the play button.
 * You can have as many timers as you want in your collection. Add a new timer as needed.
 * Update your collection any time you want. If you spot a mistake in your collection, just update it with ease.
+* All collections previously made are automatically saved on your phone's local disk.
 
 <p align="center">
     <img alt="Adding Interface" width="150" src="assets/images/screenshots/collection.png">
@@ -28,7 +29,6 @@ The app's main objective is to have multiple timers at once and to read all the 
 </p>
 
 Some other features that are going to be implemented in this app as well. Here are some features currently sitting in my wishlist.
-* Store the collections data in disk.
 * Add more customizations to the app.
 
 ## How to Run
@@ -45,8 +45,10 @@ This app is built using Flutter and is dependant on some other packages in order
 
 * <a href="https://pub.dev/packages/google_fonts">google_fonts</a>: > 5.1.0
 * <a href="https://pub.dev/packages/uuid">uuid</a>: > 3.0.7
+* <a href="https://pub.dev/packages/path">path</a>: > 1.8.3
 * <a href="https://pub.dev/packages/url_launcher">url_launcher</a>: >6.1.12
 * <a href="https://pub.dev/packages/flutter_tts">flutter_tts</a>: > 3.7.0
+* <a href="https://pub.dev/packages/sqflite">sqflite</a>: > 2.3.0
 * <a href="https://pub.dev/packages/riverpod">flutter_riverpod</a>: > 2.3.6
 
 ## Lincense
