@@ -44,10 +44,10 @@ class DrawerView extends StatelessWidget {
             leading: const Icon(Icons.north_east),
             title: const Text("Check the app repo!"),
             onTap: () async {
-              final _url =
+              final url =
                   Uri.parse("https://github.com/williamo1099/List-Timer");
-              if (!await launchUrl(_url)) {
-                throw Exception("Could not launch $_url");
+              if (!await launchUrl(url)) {
+                throw Exception("Could not launch $url");
               }
             },
           ),

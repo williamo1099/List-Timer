@@ -9,9 +9,9 @@ import 'package:list_timer/models/timer_model.dart';
 import 'package:list_timer/providers/collection_provider.dart';
 
 class CollectionEditorView extends ConsumerStatefulWidget {
-  const CollectionEditorView({super.key, required this.currentCollection});
-
   final Collection? currentCollection;
+
+  const CollectionEditorView({super.key, required this.currentCollection});
 
   @override
   ConsumerState<CollectionEditorView> createState() =>
@@ -26,42 +26,6 @@ class _CollectionEditorViewState extends ConsumerState<CollectionEditorView> {
   late List<TextEditingController> _timersTitleListController;
   late List<TextEditingController> _timersDurationListController;
   late List<TimerUnit> _timersDurationUnitList;
-
-  bool _isUpdating() {
-    return widget.currentCollection != null;
-  }
-
-  void _editCollection() {
-    final isValid = _formKey.currentState!.validate();
-
-    if (isValid) {
-      // Get the list of all timers.
-      final List<Timer> timersList = [
-        for (var i = 0; i < _timersCount; i++)
-          Timer(
-              title: _timersTitleListController[i].text,
-              duration: int.parse(_timersDurationListController[i].text),
-              unit: _timersDurationUnitList[i])
-      ];
-
-      if (_isUpdating()) {
-        // Update an existing collection.
-        Collection replacementCollection = Collection(
-            id: widget.currentCollection!.id,
-            title: _collectionTitleController.text,
-            timersList: timersList);
-        ref.read(collectionProvider.notifier).replaceCollection(
-            widget.currentCollection!.id, replacementCollection);
-      } else {
-        // Add a new collection.
-        Collection newCollection = Collection(
-            title: _collectionTitleController.text, timersList: timersList);
-        ref.read(collectionProvider.notifier).addNewCollection(newCollection);
-      }
-
-      Navigator.of(context).pop();
-    }
-  }
 
   @override
   void initState() {
@@ -104,6 +68,42 @@ class _CollectionEditorViewState extends ConsumerState<CollectionEditorView> {
     for (var i = 0; i < _timersCount; i++) {
       _timersTitleListController[i].dispose();
       _timersDurationListController[i].dispose();
+    }
+  }
+
+  bool _isUpdating() {
+    return widget.currentCollection != null;
+  }
+
+  void _editCollection() {
+    final isValid = _formKey.currentState!.validate();
+
+    if (isValid) {
+      // Get the list of all timers.
+      final List<Timer> timersList = [
+        for (var i = 0; i < _timersCount; i++)
+          Timer(
+              title: _timersTitleListController[i].text,
+              duration: int.parse(_timersDurationListController[i].text),
+              unit: _timersDurationUnitList[i])
+      ];
+
+      if (_isUpdating()) {
+        // Update an existing collection.
+        Collection replacementCollection = Collection(
+            id: widget.currentCollection!.id,
+            title: _collectionTitleController.text,
+            timersList: timersList);
+        ref.read(collectionProvider.notifier).replaceCollection(
+            widget.currentCollection!.id, replacementCollection);
+      } else {
+        // Add a new collection.
+        Collection newCollection = Collection(
+            title: _collectionTitleController.text, timersList: timersList);
+        ref.read(collectionProvider.notifier).addNewCollection(newCollection);
+      }
+
+      Navigator.of(context).pop();
     }
   }
 

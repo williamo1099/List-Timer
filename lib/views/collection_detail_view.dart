@@ -11,9 +11,9 @@ import 'package:list_timer/providers/collection_provider.dart';
 import 'package:list_timer/views/collection_editor_view.dart';
 
 class CollectionDetailView extends ConsumerStatefulWidget {
-  const CollectionDetailView({super.key, required this.collectionId});
-
   final String collectionId;
+
+  const CollectionDetailView({super.key, required this.collectionId});
 
   @override
   ConsumerState<CollectionDetailView> createState() =>
