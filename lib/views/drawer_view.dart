@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:list_timer/views/tutorial_view.dart';
 
 class DrawerView extends StatelessWidget {
   const DrawerView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Drawer(
+    return Drawer(
       child: Column(
         children: [
           // DRAWER HEADER
-          DrawerHeader(
+          const DrawerHeader(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -25,20 +26,23 @@ class DrawerView extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
 
           // DRAWER ITEMS
           ListTile(
-            leading: Icon(Icons.question_mark),
-            title: Text("How to use the app"),
+            leading: const Icon(Icons.question_mark),
+            title: const Text("How to use the app"),
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => const TutorialView(),
+            )),
           ),
 
-          ListTile(
+          const ListTile(
             leading: Icon(Icons.north_east),
             title: Text("Check the app repo!"),
           ),
 
-          ListTile(
+          const ListTile(
             leading: Icon(Icons.settings),
             title: Text("Settings"),
           ),

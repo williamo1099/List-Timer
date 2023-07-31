@@ -68,6 +68,16 @@ flutter:
     - assets/images/logo.png
     - assets/images/question_mark.png
 
+    - assets/images/tutorials/adding.png
+    - assets/images/tutorials/adding_title.png
+    - assets/images/tutorials/adding_collection_add.png
+    - assets/images/tutorials/adding_collection_remove.png
+    - assets/images/tutorials/adding_collection_save.png
+    - assets/images/tutorials/viewing.png
+    - assets/images/tutorials/viewing_collection.png
+    - assets/images/tutorials/updating.png
+    - assets/images/tutorials/playing.png
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
