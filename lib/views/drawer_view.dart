@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+// VIEWS
 import 'package:list_timer/views/tutorial_view.dart';
 
 class DrawerView extends StatelessWidget {
@@ -37,14 +40,16 @@ class DrawerView extends StatelessWidget {
             )),
           ),
 
-          const ListTile(
-            leading: Icon(Icons.north_east),
-            title: Text("Check the app repo!"),
-          ),
-
-          const ListTile(
-            leading: Icon(Icons.settings),
-            title: Text("Settings"),
+          ListTile(
+            leading: const Icon(Icons.north_east),
+            title: const Text("Check the app repo!"),
+            onTap: () async {
+              final _url =
+                  Uri.parse("https://github.com/williamo1099/List-Timer");
+              if (!await launchUrl(_url)) {
+                throw Exception("Could not launch $_url");
+              }
+            },
           ),
         ],
       ),
